@@ -1,17 +1,44 @@
 body {
   font-family: sans-serif;
+  background-color: #eef;
+  padding: 30px;
+  text-align: center;
+}
+
+.login-box, .panel {
+  max-width: 400px;
+  margin: auto;
   padding: 20px;
-  background-color: #f0f0f0;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #aaa;
+}
+
+input {
+  display: block;
+  width: 90%;
+  margin: 10px auto;
+  padding: 10px;
+  font-size: 1em;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 1em;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
 }
 
 table {
-  border-collapse: collapse;
   width: 100%;
-  margin-top: 1em;
+  margin-top: 20px;
+  border-collapse: collapse;
 }
 
 th, td {
-  padding: 8px 12px;
+  padding: 8px;
   border: 1px solid #ccc;
-  background-color: #fff;
 }
