@@ -2,39 +2,38 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>Panel WAGO HMI</title>
+  <title>Panel WAGO – Logowanie</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- CSP dla bezpieczeństwa -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self';">
-
-  <!-- Vue 2 CDN -->
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
-
-  <!-- Style -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div id="app">
-    <h1>Panel WAGO – Odczyt danych</h1>
+    <!-- PANEL LOGOWANIA -->
+    <div v-if="!zalogowany" class="login-box">
+      <h2>Logowanie</h2>
+      <input type="text" v-model="login" placeholder="Login">
+      <input type="password" v-model="haslo" placeholder="Hasło">
+      <button @click="zaloguj">Zaloguj</button>
+      <div v-if="blad" class="error">{{ blad }}</div>
+    </div>
 
-    <div v-if="loading">Ładowanie danych...</div>
-
-    <div v-else>
+    <!-- PANEL GŁÓWNY -->
+    <div v-else class="panel">
+      <h1>Witaj, {{ login }}!</h1>
+      <button @click="wyloguj">Wyloguj</button>
+      <h2>Aktualny czas</h2>
       <table>
-        <thead>
-          <tr>
-            <th>Nazwa</th>
-            <th>Wartość</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, index) in dane" :key="index">
-            <td>{{ item.name }}</td>
-            <td>{{ item.value }}</td>
-          </tr>
-        </tbody>
+        <tr>
+          <th>Strefa</th>
+          <th>Czas</th>
+        </tr>
+        <tr v-for="(czas, strefa) in czasy" :key="strefa">
+          <td>{{ strefa }}</td>
+          <td>{{ czas }}</td>
+        </tr>
       </table>
     </div>
   </div>
