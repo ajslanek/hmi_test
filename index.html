@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel WAGO HMI</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSP dla bezpieczeństwa -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self';">
+
+  <!-- Vue 2 CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+
+  <!-- Style -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <h1>Panel WAGO – Odczyt danych</h1>
+
+    <div v-if="loading">Ładowanie danych...</div>
+
+    <div v-else>
+      <table>
+        <thead>
+          <tr>
+            <th>Nazwa</th>
+            <th>Wartość</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item, index) in dane" :key="index">
+            <td>{{ item.name }}</td>
+            <td>{{ item.value }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
