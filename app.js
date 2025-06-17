@@ -1,48 +1,56 @@
 new Vue({
   el: '#app',
   data: {
-    loading: true,
-    dane: []
+    login: '',
+    haslo: '',
+    blad: '',
+    zalogowany: false,
+    czasy: {}
   },
   created() {
-    this.pobierzDane();
+    // odśwież zegary co sekundę
+    setInterval(this.aktualizujCzas, 1000);
   },
   methods: {
-    pobierzDane() {
-      var xhr = new XMLHttpRequest();
-      var self = this;
+    zaloguj() {
+      // prosta walidacja
+      if (this.login === 'admin' && this.haslo === '1234') {
+        this.zalogowany = true;
+        this.blad = '';
+      } else {
+        this.blad = 'Niepoprawny login lub hasło';
+      }
+    },
+    wyloguj() {
+      this.zalogowany = false;
+      this.login = '';
+      this.haslo = '';
+      this.czasy = {};
+    },
+    aktualizujCzas() {
+      if (!this.zalogowany) return;
 
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          try {
-            var response = JSON.parse(xhr.responseText);
-            self.dane = response.map(function(item) {
-              return {
-                name: self.sanitize(item.name),
-                value: self.sanitize(item.value)
-              };
-            });
-            self.loading = false;
-          } catch (e) {
-            console.error('Błąd parsowania JSON:', e);
-          }
-        }
+      var strefy = {
+        'Warszawa': 'Europe/Warsaw',
+        'Nowy Jork': 'America/New_York',
+        'Tokio': 'Asia/Tokyo',
+        'UTC': 'UTC'
       };
 
-      xhr.open('GET', '/api/dane', true);
-      xhr.send();
-    },
-    sanitize(str) {
-      // Prosta sanityzacja (można rozszerzyć)
-      return String(str).replace(/[<>&"']/g, function (c) {
-        return {
-          '<': '&lt;',
-          '>': '&gt;',
-          '&': '&amp;',
-          '"': '&quot;',
-          "'": '&#39;'
-        }[c];
-      });
+      var teraz = new Date();
+      var nowaMapa = {};
+
+      for (var miasto in strefy) {
+        var fmt = new Intl.DateTimeFormat('pl-PL', {
+          timeZone: strefy[miasto],
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit'
+        });
+        nowaMapa[miasto] = fmt.format(teraz);
+      }
+
+      this.czasy = nowaMapa;
     }
   }
 });
